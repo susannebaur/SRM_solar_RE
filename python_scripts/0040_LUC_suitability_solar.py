@@ -64,24 +64,13 @@ IMAGE5 = IMAGE_raw_SSP5.sel(time = slice('2015', '2100'))
 #### Suitability fractions and ds export
 if set_ID.RE_type == 'PV':
     regions = [1,2,8,15,16,17,18]
-#    regions = [1,2,8,15,16,17]
     LUC_fractions = dict()
-#     LUC_fractions['mine'] = [0.05, 0.2, 0.35, 0.4, 0.5, 0.2, 0.1]
-#     LUC_fractions['original'] = [0.01, 0.05, 0.01, 0.01, 0.05, 0.01, 0.01]
-#     LUC_fractions['no_forest'] = [0.01, 0.15, 0.2, 0.2, 0.4, 0.2, None]
-#     LUC_fractions['no_crop'] =   [None, 0.10, 0.3, 0.2, 0.4, 0.2, 0.05]
-#     LUC_fractions['no_desert'] = [0.01, 0.15, 0.3, 0.2, None, 0.2, 0.05]
     LUC_fractions['default'] = [0.01, 0.05, 0.1, 0.1, 0.25, 0.1, 0.08]
     
 
 elif set_ID.RE_type == 'CSP':
     regions = [1,2,8,15,16,17,18]
     LUC_fractions = dict()
-#     LUC_fractions['mine'] = [0.05, 0.2, 0.35, 0.4, 0.5, 0.2, 0.1]
-#     LUC_fractions['original'] = [0.01, 0.05, 0.01, 0.01, 0.05, 0.01, 0.01]
-#     LUC_fractions['no_forest'] = [0.01, 0.15, 0.2, 0.2, 0.4, 0.2, None]
-#     LUC_fractions['no_crop'] =   [None, 0.10, 0.3, 0.2, 0.4, 0.2, 0.05]
-#     LUC_fractions['no_desert'] = [0.01, 0.15, 0.3, 0.2, None, 0.2, 0.05]
     LUC_fractions['default'] = [0.01, 0.05, 0.1, 0.1, 0.25, 0.1, 0.08]
 
 else: 

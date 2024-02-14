@@ -83,8 +83,6 @@ def data_prep(ds_in):
             ds_[var] = dataprep.change_T_unit(ds_in[var])
         else:
             ds_[var] = ds_in[var]
-  #      ds_[var] = dataprep.area_weighting(ds_[var]) #do area weighting at the end
-  #      ds_[var] = dataprep.ensemble_mean(ds_[var])  #take ensemble mean also at the end
         # keep attributes
         ds_[var].attrs = ds_in[var].attrs
     return ds_

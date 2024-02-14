@@ -15,12 +15,13 @@ tech_pot_path = set_ID.solar_path+'/PV/tech_pot/'+sys.argv[1]+'/'
 sensitivity_setting = set_ID.sensitivity_setting
 
 var_list = ['rsds',
+            'rsdsPV',
             'tas',
             'va10m',
             'ua10m',
             'rsdscs',
            # 'rsdsdiff']
-		]
+            ]
 
 ### load in PREPROCESSED data (script data_prep.ipynb)
 
@@ -36,7 +37,7 @@ print('data loaded')
 #### PV potential calculation
 # calculation from Gernaat et al. 2020 Nature paper
 # A: suitability fraction (we add this later in 005)
-# a: area of cell [m2] 150km (nominal resol 140km) 
+# a: area of cell [m2] 
 
 A = 1 # suitability fraction -> added later 
 a = 1 # (we need the area of the cell of the IMAGE grid) but this is added later
@@ -45,8 +46,7 @@ nPanel = 0.268
 PR = 0.85
 
 
-#def PV_tech_pot(scen, RSDS, A, a, nLPV, nPanel, TAS , PR, ua10m, va10m, RSDScs, RSDSdiff):
-def PV_tech_pot(scen, RSDS, A, a, nLPV, nPanel, TAS , PR, ua10m, va10m, RSDScs):
+def PV_tech_pot(scen, RSDS, A, a, nLPV, nPanel, TAS , PR, ua10m, va10m, RSDScs, RSDSPV):
   
     if sensitivity_setting == 'fixed_temp':
         TAS=25
@@ -67,8 +67,8 @@ def PV_tech_pot(scen, RSDS, A, a, nLPV, nPanel, TAS , PR, ua10m, va10m, RSDScs):
         va10m_zero=xr.zeros_like(va10m)
         ua10m = ua10m_zero.where(ua10m_zero!=0, other=1)
         va10m = va10m_zero.where(va10m_zero!=0, other=1)
-#    elif sensitivity_setting == 'rsdsdiff':
-#        RSDS = RSDSdiff
+    elif sensitivity_setting == 'rsds_PV':
+        RSDS = RSDSPV
     
     Ti = 4.3 + 0.943 * TAS + 0.028 * RSDS - 1.528 * (np.sqrt(ua10m**2 + va10m**2))
     nPV = nPanel * (1 + (-0.005)*(Ti - 25))
@@ -95,7 +95,7 @@ def PV_tech_pot(scen, RSDS, A, a, nLPV, nPanel, TAS , PR, ua10m, va10m, RSDScs):
 
 PV_tech_pot(sys.argv[1], ds['rsds']['rsds'], A, a, nLPV, nPanel, ds['tas']['tas'], PR,
                         ds['ua10m']['ua10m'], ds['va10m']['va10m'], ds['rsdscs']['rsdscs'], 
- #                       ds['rsdsdiff']['rsdsdiff'])
-                )
+                        ds['rsdsPV']['rsdsPV'])
+                
 
 print('--------------------2_PV_tech_pot.py ran successfully--------------------')

@@ -85,10 +85,6 @@ def LED_calculation(scen):
 
 for scen in scens:
     LED_calculation(scen)
-    
-    ### take mean over those 10 years   
-    #low_energy_count = (low_energy_count_year['2095']+low_energy_count_year['2096']+low_energy_count_year['2097']+low_energy_count_year['2098']+low_energy_count_year['2099'])/5
-    #low_energy_count = (low_energy_count_year['2098']+low_energy_count_year['2099'])/2
 
 
 print('--------------------0061_LED_calc.py ran successfully--------------------')

@@ -123,7 +123,6 @@ for scen in scens:
         
     # remove values over the ocean
     _tech_pot_suit[scen] = _tech_pot_suit[scen].where(land_mask['GLCT']>0)   
-  #  _tech_pot_suit[scen] = _tech_pot_suit[scen].rename({'GLCT':'tech_pot'})
 
     
     # set attributes
@@ -139,7 +138,6 @@ for scen in scens:
     except:
         pass        
     #save file
-#    _tech_pot_suit[scen].mean('time').to_netcdf(save_dir + save_name)
     _tech_pot_suit[scen].to_netcdf(save_dir + save_name)
     print(save_dir + save_name)
 

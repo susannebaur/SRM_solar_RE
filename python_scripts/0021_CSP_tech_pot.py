@@ -31,15 +31,14 @@ for el in var_list:
     print(prepro_data_path+'/'+el+'_prepro_'+set_ID.year+'.nc')
     ds[el] = xr.open_mfdataset(prepro_data_path+'/'+el+'_prepro_'+set_ID.year+'.nc',
                                         engine="netcdf4", concat_dim='member', combine='nested', chunks={'time': 365})
-    ds[el].load()
+    #ds[el].load()
 
 print('data loaded')
 
 
-# exclude areas with average rsdsdir < 3000
-rsdsdir_mask = ds['rsdsdir'].where(ds['rsdsdir'].resample(time='1D').sum().mean('time') > 2999)
-# mask the area but use the hourly data
-#rsdsdir_masked_hourly = ds['rsdsdir'].where(rsdsdir_mask).resample(time='H').mean()
+# exclude areas with 10-year average daily rsdsdir of < 4000
+rsdsdir_mask = ds['rsdsdir'].where(ds['rsdsdir'].resample(time='1D').sum().mean('time') > 3999) #with angled rsdsdir
+
 
 #### CSP potential calculation
 # calculation from Gernaat et al. 2020 Nature paper
@@ -59,8 +58,8 @@ def CSP_tech_pot(RSDSdir, TAS):
 
     
     FLH = 1.83 * RSDSdir + 150    #Koeberle et al. 2015 calc
-    nCSP = nR * (0.762 - (0.2125*(115-TAS)/RSDSdir))
-    tech_pot = (RSDSdir/1000) * A * a * nLCSP * (nCSP/FLH)  #10
+    nCSP = nR * (0.762 - (0.2125*(115-TAS)/RSDSdir.where(RSDSdir>0, other=1)))
+    tech_pot = (RSDSdir/10) * A * a * nLCSP * (nCSP/FLH)  
     # turn Wh/m2 in kWh/m2
     tech_pot_kWh = tech_pot
     tech_pot_ds = tech_pot_kWh.to_dataset(name='tech_pot')
@@ -77,13 +76,13 @@ def CSP_tech_pot(RSDSdir, TAS):
     try:
         os.remove(save_dir + save_name)
     except:
-        pass        
+        pass
         #save file
     tech_pot_ds.to_netcdf(save_dir + save_name)
     print(save_dir + save_name)
-    return tech_pot 
+    return tech_pot
 
 
-CSP_pot = CSP_tech_pot(rsdsdir_mask['rsdsdir'], ds['tas']['tas']) #.resample(time='1D').sum())
+CSP_pot = CSP_tech_pot(rsdsdir_mask['rsdsdir'], ds['tas']['tas'])
 
 print('--------------------2_CSP_tech_pot.py ran successfully--------------------')

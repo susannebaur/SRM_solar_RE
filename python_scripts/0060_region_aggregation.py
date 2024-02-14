@@ -56,9 +56,9 @@ for scen in scens:
 
 ## Get the mean potential over one region     
 
-# regions_mask (no data -> data is the region number) excluding Antarctica
 #mask = regions_mask.mask(data['G6solar'])
 mask = regions_mask.mask(data['G6sulfur'])
+#exclude Antartica
 mask = mask.where(mask < 44)
 
 
